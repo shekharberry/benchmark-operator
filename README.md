@@ -50,8 +50,8 @@ spec:
     test_type: stream
     nthr: 2
     size: 16384
-    runtime: 60
-  couchbase:
+    runtime: 10
+  couchbase: 
     # To disable couchbase, set servers.size to 0
     servers:
       size: 0
