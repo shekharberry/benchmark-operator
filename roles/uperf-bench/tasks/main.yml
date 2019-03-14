@@ -25,14 +25,6 @@
   when: uperf.pair > 0
   register: servers
 
-- name: Wait for servers to be up
-  k8s_facts:
-    kind: Pod
-    api_version: v1
-    name: item.generatedName
-    namespace: '{{ meta.namespace }}'
-  with_items: servers.resources
-
 - name: Wait for pods to be running....
   k8s_facts:
     kind: Pod
