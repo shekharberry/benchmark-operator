@@ -16,7 +16,8 @@ spec:
       containers:
         - name: benchmark-operator
           # Replace this with the built image name
-          image: quay.io/jtaleric/benchmark-operator:testing
+          #image: quay.io/jtaleric/benchmark-operator:testing
+          image:  quay.io/shekharberry/benchmark-operator:testing
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
