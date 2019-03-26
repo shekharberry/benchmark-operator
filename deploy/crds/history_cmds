@@ -1,0 +1,1000 @@
+   48  docker images
+   49  docker pull registry.access.redhat.com/openshift3/registry-console
+   50  oc edit dc registry-console
+   51  oc get pods
+   52  docker images
+   53  docker rmi 4c5419cb6e35
+   54  oc get pods
+   55  oc delete pod registry-console-3-d6kkz
+   56  oc get pods
+   57  docker images
+   58  docker rmi 4c5419cb6e35
+   59  docker images
+   60  oc get pods --all-namespaces
+   61  git clone https://github.com/rook/rook.git
+   62  ls
+   63  cd rook/
+   64  ls
+   65  git describe
+   66  git branch
+   67  cd cluster/examples/kubernetes/ceph/
+   68  ls
+   69  vi scc.yaml 
+   70  vi operator.yaml 
+   71  vi cluster.yaml 
+   72  oc create -f scc.yaml 
+   73  oc create -f operator.yaml 
+   74  oc get pods
+   75  oc get project
+   76  oc proejct rook-ceph-system
+   77  oc project rook-ceph-system
+   78  oc get pods
+   79  oc describe pod rook-ceph-operator-7869c565c6-66bxz
+   80  oc get pods
+   81  oc get pods -o wide
+   82  oc get nodes
+   83  oc delete -f operator.yaml 
+   84  oc project
+   85  oc get scc
+   86  oc get nodes --show-labels 
+   87  #for i in `oc get nodes|grep -v master|grep -v NAME|awk '{print$1}'` ; do oc label node $i  node-role.kubernetes.io/rook=true; done
+   88  for i in `oc get nodes|grep -v NAME|awk '{print$1}'` ; do oc label node $i  node-role.kubernetes.io/rook=true; done
+   89  oc get nodes --show-labels 
+   90  cd rook/cluster/examples/kubernetes/ceph/
+   91  ls
+   92  vi operator.yaml 
+   93  oc create -f operator.yaml 
+   94  oc get pods
+   95  oc get pods -w
+   96  oc get pods -o wide
+   97  cd
+   98  ip a
+   99  vi /etc/sysconfig/network-scripts/ifcfg-p1p1 
+  100  ifdown p1p1
+  101  ifup p1p1
+  102  ssh gprfs024.sbu.lab.eng.bos.redhat.com 
+  103  vi /etc/sysconfig/network-scripts/ifcfg-p1p2
+  104  ifdown p1p1
+  105  ifdown p1p2
+  106  ifup p1p2
+  107  ping 172.17.40.24
+  108  ifdown p1p2
+  109  ip a
+  110  ifup p1p1
+  111  ip a
+  112  ifdown p1p1
+  113  vi /etc/sysconfig/network-scripts/ifcfg-p2p1 
+  114  ifdown p2p1
+  115  ifup p2p1
+  116  ping 172.17.40.24
+  117  ssh gprfs024.sbu.lab.eng.bos.redhat.com 
+  118  oc get nodes
+  119  oc edit node gprfs037.sbu.lab.eng.bos.redhat.com
+  120  oc get pods -n rook-ceph-system 
+  121  oc logs rook-ceph-operator-7869c565c6-7ttdx -n rook-ceph-system 
+  122  oc get nodes
+  123  oc get nodes --show-labels 
+  124  oc logs rook-ceph-operator-7869c565c6-7ttdx -n rook-ceph-system -f
+  125  oc project
+  126  oc get project
+  127  oc get project -w
+  128  oc get pods -n rook-ceph-system 
+  129  oc logs rook-ceph-operator-7869c565c6-9ww2c -n rook-ceph-system -f
+  130  ip a
+  131  ifdown p2p1
+  132  vi /etc/sysconfig/network-scripts/ifcfg-p2p2
+  133  ifdown p2p2
+  134  ifup p2p2
+  135  ip a
+  136  netstat p2p2
+  137  ethtool p2p2
+  138  ethtool p1p1
+  139  ethtool p1p2
+  140  ethtool p2p1
+  141  ifdown p2p1
+  142  ifdown p2p2
+  143  ifdown p1p1
+  144  ifdown p1p2
+  145  ifup p2p1
+  146  ip a
+  147  vi /etc/sysconfig/network-scripts/ifcfg-p2p1
+  148  ifdown p2p1
+  149  ifup p2p1
+  150  ip a
+  151  ping 172.17.40.23
+  152  ping 172.17.40.24
+  153  vi /etc/sysconfig/network-scripts/ifcfg-p2p1
+  154  ifdown p2p1
+  155  ifup p2p1
+  156  ping 172.17.40.24
+  157  iptables -L
+  158  vi /etc/sysconfig/network-scripts/ifcfg-p2p1
+  159  ifdown p2p1
+  160  ifup p2p1
+  161  oc get nodes
+  162  oc get pods
+  163  oc get project
+  164  cd rook/cluster/examples/kubernetes/ceph/
+  165  ls
+  166  vi cluster.yaml 
+  167  oc get nodes
+  168  oc label node gprfs037.sbu.lab.eng.bos.redhat.com role=mon-node
+  169  oc get nodes --show-labels 
+  170  oc label node gprfs038.sbu.lab.eng.bos.redhat.com role=mon-node
+  171  oc label node gprfs039.sbu.lab.eng.bos.redhat.com role=mon-node
+  172  oc get nodes --show-labels 
+  173  ls
+  174  cat storageclass.yaml 
+  175  oc create -f cluster.yaml 
+  176  oc get pods
+  177  oc get pods -n rook-ceph
+  178  oc get pods -n rook-ceph  -o wide -w
+  179  oc get pods
+  180  oc get pods -n rook-ceph
+  181  oc get nodes --show-labels 
+  182  vi cluster.yaml 
+  183  oc delete -f cluster.yaml 
+  184  oc get project
+  185  oc create -f cluster.yaml 
+  186  oc project rook-ceph
+  187  oc get pods
+  188  vi cluster.yaml 
+  189  oc delete -f cluster.yaml 
+  190  oc delete cephcluster rook-ceph
+  191  oc delete cephcluster rook-ceph -n rook-ceph
+  192  vi cluster.yaml 
+  193  oc delete -f operator.yaml 
+  194  oc get scc
+  195  oc create -f operator.yaml 
+  196  oc create -f cluster.yaml 
+  197  oc get pods -n rook-ceph
+  198  oc get events  
+  199  oc get pods -n rook-ceph
+  200  oc get pods -n rook-ceph -w
+  201  vi storageclass.yaml 
+  202  oc get pods -n rook-ceph -w
+  203  oc get configmap
+  204  oc edit cm rook-config-override
+  205  oc delete pod --all -n rook-ceph
+  206  oc get pods -o wide -n rook-ceph
+  207  oc get pods -o wide -n rook-ceph -w
+  208  oc describe pod rook-ceph-osd-0-849dfd7cc9-7zsw4
+  209  oc edit cm rook-config-override
+  210  oc delete pod --all -n rook-ceph
+  211  oc get pods -o wide -n rook-ceph -w
+  212  oc get pods
+  213  ls
+  214  vi toolbox.yaml 
+  215  vi operator.yaml 
+  216  oc create -f toolbox.yaml 
+  217  oc get pods
+  218  oc rsh rook-ceph-tools-b5759df6b-fpbfj 
+  219  ssh gprfs037.sbu.lab.eng.bos.redhat.com
+  220  oc get pods -o wide -n rook-ceph
+  221  oc rsh rook-ceph-tools-b5759df6b-fpbfj
+  222  oc get pods -o wide -n rook-ceph-system 
+  223  oc logs rook-ceph-operator-7869c565c6-9ww2c -n rook-ceph-system -f
+  224  screen -ls
+  225  screen -x 9934.node-add
+  226  ssh gprfs025.sbu.lab.eng.bos.redhat.com
+  227  oc get pods -o wide
+  228  oc get pods -o wide -n rook-ceph-system 
+  229  oc describe pod rook-ceph-agent-sdh7j -n rook-ceph-system 
+  230  oc describe pod rook-ceph-agent-sdh7j -n rook-ceph-system |grep -i image
+  231  date
+  232  oc get cephcluster rook-ceph
+  233  oc get cephcluster rook-ceph -o yaml
+  234  oc edit cephcluster rook-ceph
+  235  oc describe pod rook-ceph-agent-sdh7j -n rook-ceph-system |grep -i image
+  236  oc get cephcluster rook-ceph -o yaml |grep count
+  237  oc get nodes
+  238  oc label node gprfs025.sbu.lab.eng.bos.redhat.com role=mon-node
+  239  oc get nodes --show-labels|grep mon
+  240  oc project rook-ceph
+  241  oc get cephcluster rook-ceph >>cephcluster.yaml
+  242  oc edit cephcluster rook-ceph
+  243  oc get pods -o wide -w
+  244  oc get pods -o wide -w|grep osd
+  245  oc rsh rook-ceph-osd-2-585b9c86c4-9hqmz cat /etc/redhat-release
+  246  oc rsh rook-ceph-osd-2-585b9c86c4-9hqmz ceph -v
+  247  oc get pods -o wide -w|grep osd
+  248  screen -S node-add
+  249  oc get pods -o wide
+  250  oc rsh rook-ceph-tools-b5759df6b-fpbfj
+  251  oc get cephcluster rook-ceph -o yaml
+  252  oc rsh rook-ceph-tools-b5759df6b-fpbfj
+  253  oc logs rook-ceph-operator-7869c565c6-9ww2c -n rook-ceph-system -f
+  254  oc get cephcluster rook-ceph -o yaml
+  255  oc edit cephcluster rook-ceph 
+  256  oc get pods
+  257  oc rsh rook-ceph-tools-b5759df6b-fpbfj 
+  258  oc get pods
+  259  oc project
+  260  oc get all
+  261  oc get cephcluster
+  262  oc describe cephcluster rook-ceph 
+  263  oc project rook-ceph-system 
+  264  oc logs rook-ceph-operator-7869c565c6-9ww2c -f
+  265  oc project rook-ceph
+  266  oc delete cephcluster rook-ceph 
+  267  cd rook/cluster/examples/kubernetes/ceph/
+  268  oc delete -f cluster.yaml 
+  269  oc get projec
+  270  oc get project
+  271  oc get project -w
+  272  oc get project
+  273  oc delete -f operator.yaml 
+  274  oc get project 
+  275  oc delete -f scc.yaml 
+  276  oc create -f scc.yaml 
+  277  oc get scc
+  278  oc create -f operator.yaml 
+  279  oc create -f cluster.yaml 
+  280  oc project rook-ceph
+  281  oc get pods
+  282  oc create -f toolbox.yaml 
+  283  oc get pods
+  284  oc get all
+  285  oc get configmap
+  286  oc edit configmap rook-config-override
+  287  oc get pods
+  288  oc delete pods --all -n rook-ceph
+  289  oc get pods
+  290  oc rsh rook-ceph-tools-b5759df6b-8xtgk 
+  291  par-for-all.sh host.list 'ls /var/lib/rook'
+  292  par-for-all.sh host.list 'rm -rf /var/lib/rook'
+  293  par-for-all.sh host.list 'ls /var/lib/rook'
+  294  par-for-all.sh host.list 'wipefs -a /dev/nvme0n1'
+  295  par-for-all.sh host.list 'lsblk'
+  296  par-for-all.sh host.list 'wipefs -a -f /dev/nvme0n1'
+  297  par-for-all.sh host.list 'lsblk'
+  298  par-for-all.sh host.list 'vgs'
+  299  par-for-all.sh host.list 'lsblk'
+  300  ssh gprfs037.sbu.lab.eng.bos.redhat.com 
+  301  ssh gprfs038.sbu.lab.eng.bos.redhat.com 
+  302  ssh gprfs039.sbu.lab.eng.bos.redhat.com 
+  303  par-for-all.sh host.list 'uptime'
+  304  par-for-all.sh host.list 'vgs'
+  305  par-for-all.sh host.list 'lsblk'
+  306  oc get pods -n rook-ceph-system -w
+  307  oc get pods -n rook-ceph-system 
+  308  oc project rook-ceph-system 
+  309  oc logs rook-ceph-operator-7869c565c6-wbfjd -f
+  310  par-for-all.sh host.list 'docker images'
+  311  par-for-all.sh host.list 'docker images | grep rook '
+  312  par-for-all.sh host.list 'docker images | grep operator'
+  313  par-for-all.sh host.list 'docker images '
+  314  par-for-all.sh host.list 'docker rmi f9b2262b36b1'
+  315  par-for-all.sh host.list 'iptables -L'
+  316  par-for-all.sh host.list 'docker images | grep rook'
+  317  oc get nodes
+  318  ssh gprfs037.sbu.lab.eng.bos.redhat.com
+  319  oc project rook-ceph-system
+  320  oc get all
+  321  oc edit deployment.apps/rook-ceph-operator
+  322  oc project rook-ceph
+  323  oc get all
+  324  oc edit deployment.apps/rook-ceph-osd-0
+  325  oc get nodes
+  326  ssh gprfs037.sbu.lab.eng.bos.redhat.com
+  327  ls
+  328  cd rook/cluster/examples/kubernetes/
+  329  ls
+  330  cd ceph/
+  331  ls
+  332  vi scc.yaml 
+  333  vi operator.yaml 
+  334  vi cluster.yaml 
+  335  cat cluster
+  336  cat cluster.yaml 
+  337  cat operator.yaml 
+  338  cd rook/cluster/examples/kubernetes/ceph/
+  339  vi storageclass.yaml 
+  340  oc create -f storageclass.yaml 
+  341  oc get sc
+  342  oc get pods
+  343  oc get all
+  344  oc get cephblockpool
+  345  oc describ cepblockpool replicapool
+  346  oc describe cepblockpool replicapool
+  347  oc describe cephblockpool replicapool
+  348  oc getsc
+  349  cd
+  350  wget https://raw.githubusercontent.com/iamniting/ocs/master/scripts/pvc-create.sh
+  351  oc new-project test
+  352  oc project
+  353  vi pvc-create.sh 
+  354  oc get sc
+  355  vi pvc-create.sh 
+  356  chmod 777 pvc-create.sh 
+  357  ./pvc-create.sh claim1 10
+  358  oc get pvc
+  359  git clone https://github.com/openshift/svt.git
+  360  cd svt/storage/fio/files/content/
+  361  ls
+  362  cd ..
+  363  cd 
+  364  cd svt/openshift_scalability/con
+  365  cd svt/openshift_scalability/content/fio/
+  366  ls
+  367  cat fio-parameters.yaml 
+  368  cd
+  369  docker pull  quay.io/ekuric/smallfile:latest
+  370  docker images
+  371  par-for-all.sh host.list 'docker pull  quay.io/ekuric/smallfile:latest'
+  372  git clone https://github.com/distributed-system-analysis/pbench.git
+  373  vi pbench/contrib/ansible/openshift/pbench_register.yml 
+  374  cd pbench
+  375  ls
+  376  cd contrib/ansible/
+  377  ls
+  378  cd openshift/
+  379  ls
+  380  cd
+  381  cp Containerized_gluster/pbench_inv .
+  382  vi pbench_inv 
+  383  #ansible-playbook -i pbench/contrib/ansible/openshift/pbench_register.yml 
+  384  chmod 777 pbench_inv 
+  385  ansible-playbook -i pbench/contrib/ansible/openshift/pbench_register.yml 
+  386  ansible-playbook -i pbench_inv pbench/contrib/ansible/openshift/pbench_register.yml 
+  387  par-for-all.sh host.list 'cd /etc/yum.repos.d && wget http://pbench.perf.lab.eng.bos.redhat.com/repo/yum.repos.d/pbench.repo'
+  388  par-for-all.sh host.list 'yum install -y pbench-agent-internal'
+  389  par-for-all.sh host.list 'rpm -qa | grep pbench'
+  390  history
+  391  vi pbench_inv 
+  392  ansible-playbook -i pbench_inv pbench/contrib/ansible/openshift/pbench_register.yml 
+  393  cd /var/lib/pbench-agent/
+  394  ls
+  395  cd tools-default/
+  396  s
+  397  ls
+  398  cd
+  399  pbench-fio --help
+  400  cd svt/openshift_scalability/
+  401  python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  402  yum install boto3
+  403  yum search boto
+  404  yum install python-boto3.noarch
+  405  python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  406  yum search flask
+  407  yum install -y python-flask.noarch
+  408  python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  409  oc project
+  410  oc get pods
+  411  oc get pv
+  412  oc delete project test
+  413  oc project
+  414  oc get project
+  415  oc project fiotest0 
+  416  oc get all
+  417  oc get pods
+  418  oc describe pod fio-pod-5k4qc 
+  419  oc get pvc
+  420  oc describe pvc pvc5b1xujlxrv
+  421  oc delete project fiotest0 test0
+  422  oc get sc
+  423  vi content/fio/fio-parameters.yaml 
+  424  #python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  425  cat content/fio/fio-template.json | grep ifexists
+  426  cat content/fio/fio-template.json 
+  427  vi content/fio/fio-parameters.yaml 
+  428  python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  429  oc project default
+  430  oc delete project fiotest 
+  431  python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  432  oc project fiotest 
+  433  oc get pods
+  434  oc get pv
+  435  vi content/fio/fio-parameters.yaml 
+  436  python cluster-loader.py -f content/fio/fio-parameters.yaml 
+  437  oc get pods
+  438  oc get pv
+  439  oc delete pod fio-pod-6xpq9
+  440  oc get pv
+  441  oc get pvc
+  442  oc delete pvc pvchmalnrru1e
+  443  oc get pv
+  444  oc project rook-ceph-system 
+  445  oc get pods
+  446  pc project rook-ceph
+  447  oc project rook-ceph
+  448  oc rsh rook-ceph-tools-b5759df6b-8xtgk 
+  449  oc get nodes
+  450  git clone https://github.com/shekharberry/benchmark-operator.git
+  451  cd benchmark-operator/
+  452  #export KUBECONFIG=/root/.kube/config
+  453  cat /root/.kube/config 
+  454  export KUBECONFIG=/root/.kube/config
+  455  oc new-project benchmark
+  456  ls
+  457  oc project benchmark
+  458  oc create -f deploy/role.yaml 
+  459  oc create -f deploy/role_binding.yaml 
+  460  oc create -f deploy/service_account.yaml 
+  461  oc create -f deploy/crds/bench_v1alpha1_bench_crd.yaml 
+  462  oc create -f deploy/operator.yaml 
+  463  ls
+  464  oc get all
+  465  oc get pods
+  466  oc get dc
+  467  oc get pods
+  468  vi deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  469  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml
+  470  oc get pods
+  471  oc rsh example-bench-fio-client-1-bench 
+  472   --version
+  473  fio --version
+  474  oc rsh example-bench-fio-client-1-bench 
+  475  oc get ods
+  476  oc get pods
+  477  oc logs example-bench-fio-client-1-bench
+  478  cat deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  479  ls
+  480  cd workloads/
+  481  ls
+  482  cat fio-Dockerfile 
+  483  cd ..
+  484  ls
+  485  cd roles/fio-bench/
+  486  ls
+  487  cd templates/
+  488  ls
+  489  cat job.fio.j2 
+  490  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  491  oc get bench
+  492  oc delete bench example-bench 
+  493  oc get pods
+  494  oc get bench
+  495  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  496  oc get pods
+  497  oc get pods -w -ow ide
+  498  oc get pods -w -o wide
+  499  oc logs example-bench-fio-client-1-bench -f
+  500  oc get pods -w -o wide
+  501  oc logs example-bench-fio-client-1-bench -f
+  502  oc rsh example-bench-fio-client-1-bench 
+  503  oc get pods
+  504  oc logs example-bench-fio-client-1-bench -f
+  505  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  506  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  507  oc get pods -o wide
+  508  oc get pods -o wide -w
+  509  oc logs example-bench1-fio-client-1-bench 
+  510  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  511  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  512  oc get pods -o wide
+  513  oc get pods -o wide -w
+  514  oc rsh example-bench2-fio-client-1-bench
+  515  ls
+  516  oc get pods
+  517  oc get bench
+  518  oc delete bench example-bench
+  519  oc delete bench example-bench1
+  520  oc delete bench example-bench2
+  521  oc get pods
+  522  oc get pods --all-namespaces 
+  523  ls
+  524  cat job.fio.j2 
+  525  oc get all
+  526  oc get configmap
+  527  cat /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  528  cat /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_crd.yaml 
+  529  cp /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr_org.yaml
+  530  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  531  cp /root/benchmark-operator/roles/fio-bench/tasks/main.yml /root/benchmark-operator/roles/fio-bench/tasks/main_org.yml
+  532  vi /root/benchmark-operator/roles/fio-bench/tasks/main.yml 
+  533  ls
+  534  cp job.fio.j2 job.fio.j2.org
+  535  cat /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml
+  536  cp job.fio.j2 job.fio.seq_write
+  537  cp job.fio.j2 job.fio.seq_read
+  538  cp job.fio.j2 job.fio.seq_rw
+  539  vi job.fio.seq_write 
+  540  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  541  oc get pods
+  542  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  543  oc get pods -w
+  544  oc logs example-bench2-fio-client-1-bench
+  545  oc logs example-bench2-fio-client-1-bench -f
+  546  oc get bench
+  547  oc logs example-bench2-fio-client-1-bench -f
+  548  vi ../tasks/main.yml 
+  549  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  550  cat job.fio.seq_write 
+  551  vi job.fio.seq_write 
+  552  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  553  oc get pods -w
+  554  oc logs example-bench3-fio-client-1-bench -f
+  555  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  556  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  557  oc get pods
+  558  oc get pods -w
+  559  oc logs example-bench4-fio-client-1-bench 
+  560  oc logs example-bench4-fio-client-1-bench -f
+  561  oc get configmap
+  562  oc edit configmap fio-test 
+  563  oc delete configmap fio-test
+  564  oc get bench
+  565  oc delete bench example-bench{2..4}
+  566  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  567  oc get configmap
+  568  oc describe configmap
+  569  vi ../tasks/main.yml 
+  570  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  571  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  572  oc get cf
+  573  oc get cm
+  574  oc get pods
+  575  ls
+  576  vi ../tasks/main
+  577  vi ../tasks/main.yml 
+  578  oc get bench
+  579  oc delete bench example-bench4
+  580  oc delete bench example-bench5
+  581  oc get configmap
+  582  vi /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  583  oc create -f /root/benchmark-operator/deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  584  oc get configmap
+  585  oc get pods
+  586  oc rsh example-bench5-fio-client-1-bench 
+  587  ls
+  588  cd ..
+  589  ls
+  590  cd tasks/
+  591  ls
+  592  pwd
+  593  cta main.yml 
+  594  cat main.yml 
+  595  oc ge tconfigmap
+  596  oc get configmap
+  597  oc get rc
+  598  ls
+  599  cd ..
+  600  ls
+  601  cd ..
+  602  ls
+  603  cd ..
+  604  ls
+  605  cd deploy/
+  606  ls
+  607  vi operator.yaml 
+  608  cd ..
+  609  cat deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  610  cat roles/fio-bench/tasks/main.yml 
+  611  q
+  612  cd
+  613  ls
+  614  cd benchmark-operator/
+  615  ls
+  616  cd 
+  617  git clone https://github.com/operator-framework/operator-sdk.git
+  618  yum install dep
+  619  curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  620  echo $GOPATH
+  621  echo $GOBIN
+  622  yum isnatll go
+  623  yum isnatll golang
+  624  wget https://dl.google.com/go/go1.12.1.linux-amd64.tar.gz
+  625  ls
+  626  tar -C /usr/local -xzf go1.12.1.linux-amd64.tar.gz 
+  627  echo $GOBIN
+  628  echo $GOPATH
+  629  rpm -qa | grep go
+  630  export PATH=$PATH:/usr/local/go/bin
+  631  go --version
+  632  go version
+  633  echo $HOME
+  634  echo $PATH
+  635  which go
+  636  dnf install golang
+  637  vi /root/.bashrc 
+  638  echo $PATH
+  639  vi /root/.bashrc 
+  640  source /root/.bashrc 
+  641  echo $GOBIN
+  642  $GOBIN version
+  643  $GOPATH version
+  644  $GOPATH/go version
+  645  echo $GOPATH
+  646  echo $GOBIN
+  647  curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  648  docker version
+  649  kubectl version
+  650  mkdir -p $GOPATH/src/github.com/operator-framework
+  651  cd $GOPATH/src/github.com/operator-framework
+  652  ls
+  653  git clone https://github.com/operator-framework/operator-sdk
+  654  ls
+  655  cd operator-sdk/
+  656  ls
+  657  git checkout master
+  658  make dep
+  659  make install
+  660  echo $GOPATH
+  661  vi /root/.bashrc 
+  662  source /root/.bashrc 
+  663  make install
+  664  cd ..
+  665  cd .
+  666  cd 
+  667  rm -rf operator-sdk
+  668  mkdir -p $GOPATH/src/github.com/operator-framework
+  669  echo $GOBIN
+  670  vi /root/.bashrc 
+  671  source /root/.bashrc 
+  672  ls
+  673  rm -rf /usr/bin/src
+  674  mkdir -p $GOPATH/src/github.com/operator-framework
+  675  cd $GOPATH/src/github.com/operator-framework
+  676  git clone https://github.com/operator-framework/operator-sdk
+  677  git checkout master
+  678  cd operator-sdk/
+  679  ls
+  680  git checkout master
+  681  make dep
+  682  make install
+  683  cd
+  684  cd /usr/local/
+  685  ls
+  686  vi /root/.bashrc 
+  687  cd
+  688  vi /root/.bashrc 
+  689  source /root/.bashrc 
+  690  rm -rf /usq
+  691  df -kh
+  692  rm -rf /va
+  693  rm -rf /var/log/message
+  694  df -kh
+  695  rm -rf /var/log/message*
+  696  df -kh
+  697  rm -rf /var/log/chrony/*
+  698  df -kh
+  699  rm -rf /usr/local/go/src
+  700  mkdir -p $GOPATH/src/github.com/operator-framework
+  701  cd $GOPATH/src/github.com/operator-framework
+  702  git clone https://github.com/operator-framework/operator-sdk
+  703  cd operator-sdk/
+  704  make dep
+  705  make install
+  706  cd ..
+  707  rm -rf src
+  708  cd
+  709  df -kh
+  710  oc get pods --all-namespaces 
+  711  rpm -qa | grep golang
+  712  rpm -qa | grep go
+  713  rpm -qa | grep golang
+  714  rpm -e golang*
+  715  rpm -e golang-bin-1.9.4-1.el7.x86_64
+  716  rpm -e golang-1.9.4-1.el7.x86_64
+  717  yum remove golang
+  718  rpm -qa | grep golang
+  719  rpm -e golang-src 
+  720  rpm -qa | grep golang
+  721  cd /usr/local/
+  722  ls
+  723  go version
+  724  rm /usr/local/go
+  725  rm -rf /usr/local/go
+  726  cd /usr/bin/
+  727  ls
+  728  cd
+  729  tar -C /usr/local -xzf go1.12.1.linux-amd64.tar.gz 
+  730  cd /usr/local/
+  731  ls
+  732  cd go/
+  733  ls
+  734  cd
+  735  #mkdir -p $GOPATH/src/github.com/operator-framework
+  736  vi /root/.bashrc 
+  737  cd /usr/local/go/bin/
+  738  ls
+  739  cd
+  740  $GOBIN version
+  741  $GOBIN/go version
+  742  $GOPATH/go version
+  743  cd
+  744  source /root/.bashrc 
+  745  cd /tmp/
+  746  ls
+  747  docker images
+  748  oc get pods -o wide
+  749  ssh gprfs038.sbu.lab.eng.bos.redhat.com
+  750  ssh gprfs037.sbu.lab.eng.bos.redhat.com
+  751  ssh gprfs038.sbu.lab.eng.bos.redhat.com
+  752  cd
+  753  curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  754  go version
+  755  /usr/local/bin/go version
+  756  /usr/local/go version
+  757  /usr/local/go/go version
+  758  which go
+  759  echo $PATH
+  760  /usr/local/bin/go version
+  761  echo $GOBIN
+  762  source /root/.bashrc
+  763  echo $GOBIN
+  764  cd -
+  765  cd
+  766  curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  767  /usr/local/go/bin/go version
+  768  echo $GOPATH
+  769  echo $GOBIN
+  770  cd /usr/local/bin/
+  771  ls
+  772  cd ..
+  773  cd go/bin
+  774  ls
+  775  mkdir -p $GOPATH/src/github.com/operator-framework
+  776  cd $GOPATH/src/github.com/operator-framework
+  777  git clone https://github.com/operator-framework/operator-sdk
+  778  pwd
+  779  cd operator-sdk/
+  780  pwd
+  781  make dep
+  782  pwd
+  783  cd /usr/local/go/src/github.com/operator-framework/operator-sdk/
+  784  make dep
+  785  git checkout master
+  786  make dep
+  787  rpm -qa | grep dep
+  788  make /usr/local/go/bin/dep
+  789  make dep
+  790  ls
+  791  cd
+  792  cd benchmark-operator/
+  793  operator-sdk --version
+  794  /usr/local/go/bin/operator-sdk --version
+  795  export PATH=$PATH:/usr/local/go/bin
+  796  curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  797  make dep
+  798  cd /usr/local/go/src/github.com/operator-framework/operator-sdk/
+  799  make dep
+  800  make install
+  801  cd
+  802  cd benchmark-operator/
+  803  operator-sdk --version
+  804  history
+  805  cat /root/.bashrc 
+  806  cd
+  807  df -kh
+  808  operator-sdk --version
+  809  which operator-sdk
+  810  df -kh
+  811  oc get pods --all-namespaces | grep evict
+  812  oc get pods --all-namespaces | grep vict
+  813  oc get pods --all-namespaces | grep -v vict
+  814  cd benchmark-operator/
+  815  ls
+  816  cat roles/fio-bench/tasks/main.yml 
+  817  /usr/local/go/bin/operator-sdk build quay.io/shekharberry/benchmark-operator:testing
+  818  ls
+  819  docker images
+  820  docker push quay.io/shekharberry/benchmark-operator:testing
+  821  docker login quay.io
+  822  docker login -u="shekharberry" -p="t6AxZfmQxF68xkDfwE7YeyLTnO8jiScbaGezD9Xf8tHzRkd4Jos3qE7zoyVkwOCa" quay.io
+  823  docker push quay.io/shekharberry/benchmark-operator:testing
+  824  ls
+  825  vi deploy/operator.yaml 
+  826  oc create -f deploy/operator.yaml 
+  827  oc get benchmark-operator
+  828  cat deploy/operator.yaml 
+  829  oc get dc
+  830  oc get deployment
+  831  oc describe benchmark-operator
+  832  oc describe deployment benchmark-operator
+  833  oc delete deployment benchmark-operator
+  834  oc get deployment
+  835  oc create -f deploy/operator.yaml 
+  836  oc describe deployment benchmark-operator
+  837  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  838  oc get bench
+  839  oc delete bench example-bench5 
+  840  oc get pods
+  841  oc delete pod benchmark-operator-54bf9f4c44-f8ns6
+  842  oc get pods
+  843  oc dscribe pod benchmark-operator-54bf9f4c44-2zkzr
+  844  oc describe pod benchmark-operator-54bf9f4c44-2zkzr
+  845  oc get pods
+  846  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  847  oc get pods
+  848  oc get pods -w
+  849  oc get bench
+  850  oc describe bench example-bench5 
+  851  oc delete bench example-bench5 
+  852  vi roles/fio-bench/tasks/main.yml 
+  853  /usr/local/go/bin/operator-sdk build quay.io/shekharberry/benchmark-operator:testing
+  854  docker push quay.io/shekharberry/benchmark-operator:testing
+  855  oc get deployment
+  856  oc delete deployment benchmark-operator
+  857  oc get pods
+  858  oc create -f deploy/operator.yaml 
+  859  oc get pods
+  860  oc get pods -o wide
+  861  oc get bench
+  862  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  863  oc get pods -w
+  864  oc describe pod example-bench5-fio-client-1-bench
+  865  vi roles/fio-bench/tasks/main.yml 
+  866  oc get bench
+  867  oc get configmap
+  868  oc describe configmap
+  869  cat roles/fio-bench/templates/job.fio.seq_write 
+  870  /usr/local/go/bin/operator-sdk build quay.io/shekharberry/benchmark-operator:testing
+  871  docker push quay.io/shekharberry/benchmark-operator:testing
+  872  oc get deployment
+  873  oc delete deployment benchmark-operator
+  874  oc create -f deploy/operator.yaml 
+  875  oc get pods
+  876  oc get bench
+  877  oc get pods
+  878  o cget configmap
+  879  oc get configmap
+  880  oc delete bench example-bench5 
+  881  oc get configmap
+  882  oc get pods
+  883  oc describe pod benchmark-operator-54bf9f4c44-92n8q
+  884  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  885  oc ge pods -w
+  886  oc get pods -w
+  887  oc rsh example-bench5-fio-client-1-bench
+  888  oc get pods
+  889  oc logs example-bench5-fio-client-1-bench -f
+  890  oc get pods
+  891  cd benchmark-operator/
+  892  cat deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  893  cd
+  894  par-for-all.sh host.list 'docker images | grep shekhar'
+  895  par-for-all.sh host.list 'docker images | grep shekhar'
+  896  yum install podman
+  897  podman ps
+  898  podman images
+  899  docker images
+  900  podman --help
+  901  oc get pods
+  902  cd benchmark-operator/
+  903  oc version
+  904  cat /etc/redhat-release 
+  905  cd benchmark-operator/roles/fio-bench/templates/
+  906  ls
+  907  vi job.fio.seq_write 
+  908  cd
+  909  oc get bench
+  910  oc delete bench example-bench5 
+  911  oc get deployment
+  912  cd benchmark-operator/deploy/crds/
+  913  vi bench_v1alpha1_bench_cr.yaml 
+  914  cat bench_v1alpha1_bench_cr.yaml 
+  915  df -kh
+  916  du -ksh 
+  917  du -ksh /
+  918  cd /
+  919  du
+  920  du >> size
+  921  cat size | sort
+  922  free -h
+  923  echo 3  >> /proc/sys/vm/drop_caches 
+  924  free -h
+  925  df -kh
+  926  oc get bench
+  927  oc get deployment
+  928  oc delete deployment benchmark-operator
+  929  oc get pods
+  930  oc get project
+  931  cd benchmark-operator/
+  932  vi roles/fio-bench/templates/job.fio.seq_write 
+  933  /usr/local/go/bin/operator-sdk build quay.io/shekharberry/benchmark-operator:testing
+  934  docker push quay.io/shekharberry/benchmark-operator:testing
+  935  oc create -f deploy/operator.yaml 
+  936  oc get deployment
+  937  oc get pods
+  938  oc get pods -w
+  939  oc get pods -o wide
+  940  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  941  oc get pods
+  942  oc logs example-bench5-fio-client-1-bench -f
+  943  oc rsh example-bench5-fio-client-1-bench 
+  944  oc get pods
+  945  vi roles/fio-bench/templates/job.fio.seq_write 
+  946  oc delete bench example-bench5 
+  947  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  948  oc get pods -w
+  949  oc delete bench example-bench5 
+  950  oc delete deployment benchmark-operator
+  951  oc get pods
+  952  oc project
+  953  /usr/local/go/bin/operator-sdk build quay.io/shekharberry/benchmark-operator:testing
+  954  docker push quay.io/shekharberry/benchmark-operator:testing
+  955  oc create -f deploy/operator.yaml 
+  956  oc get pods
+  957  oc get pods -w
+  958  oc get pods -o wide
+  959  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  960  oc get pods -w
+  961  oc logs example-bench5-fio-client-1-bench -f
+  962  oc rsh example-bench5-fio-client-1-bench 
+  963  oc logs example-bench5-fio-client-1-bench 
+  964  vi deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  965  vi deploy/crds/bench_v1alpha1_bench_crd.yaml 
+  966  oc create -f deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  967  oc get pods
+  968  oc get pods -w
+  969  oc logs  example-bench-fio-client-1-bench 
+  970  oc logs  example-bench-fio-client-1-bench -f
+  971  ls
+  972  cd build/
+  973  s
+  974  ls
+  975  cd test-framework/
+  976  ls
+  977  cat Dockerfile 
+  978  cat ansible-test.sh 
+  979  cd
+  980  cd  benchmark-operator/
+  981  git add .
+  982  git commit
+  983  git push
+  984  ls
+  985  pwd
+  986  cat deploy/crds/bench_v1alpha1_bench_cr.yaml 
+  987  ssh gprfs038.sbu.lab.eng.bos.redhat.com 
+  988  cd benchmark-operator/
+  989  ls 
+  990  cd roles/fio-bench/
+  991  ls
+  992  cd templates/
+  993  ls
+  994  pwd
+  995  ls
+  996  cat ../tasks/main.yml 
+  997  ls
+  998  cat job.fio.seq_write 
+  999  oc get pods
+ 1000  df -kh
+ 1001  echo 3  >> /proc/sys/vm/drop_caches 
+ 1002  df -kh
+ 1003  rm -rf /var/log/messages*
+ 1004  docker images
+ 1005  docker rmi 20fa92e5a0ec
+ 1006  ls
+ 1007  df -kh
+ 1008  cd /var/log/
+ 1009  ls
+ 1010  ls -lrt
+ 1011  cd journal
+ 1012  ls
+ 1013  ls -lrt
+ 1014  rm -rf c
+ 1015  cd ..
+ 1016  rm -rf chrony/*
+ 1017  df -kh
+ 1018  cd
+ 1019  cd /
+ 1020  du -ksh
+ 1021  ls
+ 1022  cd tmp
+ 1023  ls
+ 1024  cd /var/lib/pbench-agent
+ 1025  ls
+ 1026  cd -
+ 1027  rm -rf par*
+ 1028  ls
+ 1029  ls -lrt
+ 1030  df -kh
+ 1031  cd
+ 1032  ls
+ 1033  cd /
+ 1034  ls
+ 1035  df -kh
+ 1036  c
+ 1037  cd
+ 1038  cd benchmark-operator/
+ 1039  ls
+ 1040  car deploy/crds/
+ 1041  cd deploy/crds
+ 1042  ls
+ 1043  cat bench_v1alpha1_bench_crd.yaml 
+ 1044  cat bench_v1alpha1_bench_cr.yaml 
+ 1045  history | grep export
+ 1046  history 
+ 1047  history >> history_cmds

@@ -22,6 +22,8 @@ spec:
     runtime: 60
     numjobs: 1
     filesize: 1
+    storageclass: rook-ceph-block
+    storagesize: 27Gi
   sysbench:
     enabled: true
     tests:
