@@ -9,7 +9,51 @@
         namespace: '{{ meta.namespace }}'
       data:
         fiojob: "{{ lookup('template', 'job.fio.{{fio.job}}') }}"
+  when: ( fio.clients > 0 and fio.job != "custom" )
+  register: template_file
+
+- name: Download the custome fio job
+  get_url:
+    url: http://perf1.perf.lab.eng.bos.redhat.com/pub/shberry/fio/custom.fio
+    dest: /etc/fio.job
+
+- name: Generate Custom fio test
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: fio-test-shekhar
+        namespace: '{{ meta.namespace }}'
+      #get_url:
+        #url: http://perf1.perf.lab.eng.bos.redhat.com/pub/shberry/fio/custom.fio
+        #dest: /etc/fio.job
+      data:
+        fiojob: "/etc/fio.job"
+  when: ( fio.clients > 0 and fio.job == "custom" )
+ 
+#- name: temp_file
+#  debug:
+#    var: "{{ template_file }}"
+
+- name: Create PVC(s)
+  k8s:
+    definition:
+      kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: "claim{{item}}"
+        namespace: '{{ meta.namespace }}'
+        annotations:
+           volume.beta.kubernetes.io/storage-class: "{{fio.storageclass}}"
+      spec:
+         accessModes:
+           - ReadWriteOnce
+         resources:
+           requests:
+             storage: "{{fio.storagesize}}"
   when: fio.clients > 0
+  with_sequence: start=1 count={{fio.clients}}
 
 - name: Create PVC(s)
   k8s:
@@ -49,12 +93,15 @@
           volumeMounts:
           - name: config-volume
             mountPath: "/tmp/fio"
+          - name: ceph-volume
+            mountPath: "/mnt/pvc"
         volumes:
         - name: config-volume
-          persistentVolumeClaim: 
-            claimName: claim1
           configMap:
             name: fio-test-shekhar
+        - name: ceph-volume
+          persistentVolumeClaim:
+            claimName: claim{{item}}
         restartPolicy: Never
   when: fio.clients > 0
   with_sequence: start=1 count={{fio.clients}}

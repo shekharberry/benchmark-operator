@@ -1,6 +1,6 @@
 [global]
 name={{fio.jobname}}
-filename=/tmp/fio-seq_write_shekhar
+directory=/mnt/pvc/
 ioengine=sync
 bs={{fio.bs}}
 iodepth={{fio.iodepth}}
@@ -13,7 +13,7 @@ clocksource=clock_gettime
 ramp_time=10
 startdelay=20
 
-[fio]
+[write]
 rw=write
 size={{fio.filesize}}g
 write_bw_log=fio
@@ -24,3 +24,25 @@ numjobs={{fio.numjobs}}
 per_job_logs=1
 log_avg_msec=60000
 log_hist_msec=60000
+
+[read]
+rw=read
+size={{fio.filesize}}g
+write_bw_log=fio
+write_iops_log=fio
+write_lat_log=fio
+write_hist_log=fio
+numjobs={{fio.numjobs}}
+per_job_logs=1
+log_avg_msec=60000
+
+[readwrite]
+rw=rw
+size={{fio.filesize}}g
+write_bw_log=fio
+write_iops_log=fio
+write_lat_log=fio
+write_hist_log=fio
+numjobs={{fio.numjobs}}
+per_job_logs=1
+log_avg_msec=60000

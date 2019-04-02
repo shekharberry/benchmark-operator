@@ -14,22 +14,13 @@ spec:
     runtime: 10
   fio:
     # To disable fio, set clients to 0
-    job: seq_write # either of seq_write, seq_read, seq_rw, rand_write, rand_read, rand_rw
+    job: custom # either of custom, seq_write, seq_read, seq_rw, rand_write, rand_read, rand_rw
     clients: 1
     jobname: seq-write
     bs: 4k
     iodepth: 4
     runtime: 60
-    numjobs: 1
+    numjobs: 2
     filesize: 1
     storageclass: rook-ceph-block
-    storagesize: 27Gi
-  sysbench:
-    enabled: true
-    tests:
-    - name: cpu
-      parameters:
-        cpu-max-prime: 2000
-    - name: fileio
-      parameters:
-        file-test-mode: rndrw
+    storagesize: 30Gi
