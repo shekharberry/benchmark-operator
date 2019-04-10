@@ -1,5 +1,4 @@
 ---
-
 - set_fact:
     fio_path: /mnt/pvc
   when: fio.storageclass is defined
@@ -19,8 +18,36 @@
         namespace: '{{ meta.namespace }}'
       data:
         fiojob: "{{ lookup('template', 'job.fio.{{fio.job}}') }}"
-  when:  fio.clients > 0 
+  when: ( fio.clients > 0 and fio.job != "custom" )
   register: template_file
+
+- name: Download the custom fio job
+  get_url:
+    url: "{{ fio.get_url }}" 
+    dest: /tmp/fio.job
+  when: ( fio.clients > 0 and fio.job == "custom" )
+    #owner: root
+    #group: root
+
+- name: Generate Custom fio test
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: fio-test
+        namespace: '{{ meta.namespace }}'
+      #get_url:
+        #url: "{{ fio.get_url }}"
+        #dest: /tmp/fio.job
+      #uri:
+        #url: "{{ fio.get_url }}"
+        #return_content: yes
+      #register: fio.job
+      data:
+        fiojob: "{{ lookup('file', '/tmp/fio.job') }}"
+  when: ( fio.clients > 0 and fio.job == "custom" )
+      
 
 - name: Create PVC(s)
   k8s:
