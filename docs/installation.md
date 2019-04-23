@@ -43,17 +43,33 @@ The workloads could also have their own requirements which would be specified
 in the installation guide.
 
 ### Deploying operator
+Note: The benchmark-operator's code-name is ripsaw, so the names have been
+used interchangeably.
+
+First we'll need to clone the operator:
 
 ```bash
-# git clone https://github.com/jtaleric/benchmark-operator
+# git clone https://github.com/cloud-bulldozer/ripsaw
 # cd benchmark-operator
 # export KUBECONFIG=<your_kube_config> # if not already done
-# kubectl create -f deploy/namespace.yaml # if on ocp/okd use oc new-project benchmark
-# kubectl create -f deploy/role.yaml
-# kubectl create -f deploy/role_binding.yaml
-# kubectl create -f deploy/service_account.yaml
-# kubectl create -f deploy/crds/bench_v1alpha1_bench_crd.yaml
-# kubectl create -f deploy/operator.yaml
+```
+
+We try to maintain all resources created/required by ripsaw in the namespace
+ripsaw, so we'll create the namespace and add a context with admin user and
+can be done as follows:
+
+```bash
+# kubectl apply -f resources/namespace.yaml
+# kubectl config set-context ripsaw --namespace=ripsaw --cluster=<your_cluster_name> --user=<your_cluster_admin_user>
+# kubectl config use-context ripsaw
+```
+
+We'll now apply the permissions and operator definitions.
+
+```bash
+# kubectl apply -f deploy
+# kubectl apply -f resources/crds/benchmark_v1alpha1_benchmark_crd.yaml
+# kubectl apply -f resources/operator.yaml
 ```
 
 ### Running workload
@@ -62,6 +78,9 @@ run workloads:
 * [uperf](uperf.md)
 * [fio](fio.md)
 * [sysbench](sysbench.md)
+* [couchbase](couchbase.md)
+* [YCSB](ycsb.md)
+* [Bring your own workload](byowl.md)
 
 If you want to add a new workload please follow these [instructions](../CONTRIBUTE.md#Add-workload) to submit a PR
 
@@ -69,10 +88,8 @@ If you want to add a new workload please follow these [instructions](../CONTRIBU
 Now that we're running workloads we can cleanup by running following commands
 
 ```bash
-# kubectl delete -f deploy/crds/bench_v1alpha1_bench_cr.yaml # if not already done and assuming this was the resource file passed
-# kubectl delete -f deploy/crds/bench_v1alpha1_bench_crd.yaml
-# kubectl delete -f deploy/operator.yaml
-# kubectl delete -f deploy/role.yaml
-# kubectl delete -f deploy/role_binding.yaml
-# kubectl delete -f deploy/service_account.yaml
+# kubectl delete -f resources/crds/benchmark_v1alpha1_benchmark_cr.yaml # if not already done and assuming this was the resource file passed
+# kubectl delete -f resources/crds/benchmark_v1alpha1_benchmark_crd.yaml
+# kubectl delete -f resources/operator.yaml
+# kubectl delete -f deploy
 ```

@@ -12,8 +12,8 @@ How to:
 
 In order to submit a change or a PR, please fork the project and follow instructions:
 ```bash
-$ git clone http://github.com/<me>/benchmark-operator
-$ cd benchmark-operator
+$ git clone http://github.com/<me>/ripsaw
+$ cd ripsaw
 $ git checkout -b <branch_name>
 $ <make change>
 $ git add <changes>
@@ -77,7 +77,7 @@ These should be buildable by our CI system for maintaining a central public imag
 
 ### Workload triggers
 [CRD](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/) holds the definition of the resource.
-The operator triggers roles based on the conditions defined in [cr](deploy/crds/bench_v1alpha1_bench_cr.yaml) which will influence which roles the
+The operator triggers roles based on the conditions defined in [cr](resources/crds/benchmark_v1alpha1_benchmark_cr.yaml) which will influence which roles the
 [playbook](playbook.yml) executes.
 Other vars may be defined that can modify the workload run conditions.
 
@@ -85,10 +85,11 @@ For the sake of the example CR, please default all workloads to disabled.
 
 Example CR:
 ```yaml
-apiVersion: bench.example.com/v1alpha1
-kind: Bench
+apiVersion: benchmark.example.com/v1alpha1
+kind: Benchmark
 metadata:
-  name: example-bench
+  name: example-benchmark
+  namespace: ripsaw
 spec:
   <existing_cr_entries>
   my-new-role:
@@ -107,6 +108,9 @@ spec:
 * To help users understand how the workload can be run, please add a guide similar
 to [uperf](docs/uperf.md)
 * Add the link for your workload guide to [installation guide](docs/installation.md#running-workloads)
+* Ensure all resources created are within the `ripsaw` namespace, this can be done by setting namespace
+to use `operator_namespace` var. This is to ensure that the resources aren't defaulted to current active
+namespace which is what `meta.namespace` would default to. 
 
 ### Best practices for new workloads
 The following steps are suggested for your workload to be added:
@@ -128,27 +132,27 @@ $ docker push quay.io/<username>/benchmark-operator:testing
 
 `:testing` is simply a tag. You can define different tags to use with your image, like `:latest`
 
-To test with your own operator image, you will need the [operator](deploy/operator.yml) file to point the container image to your testing version.
+To test with your own operator image, you will need the [operator](resources/operator.yml) file to point the container image to your testing version.
 Be sure to do this outside of your git tree to avoid mangling the official file that points to our stable image.
 
 This can be done as follows:
 
 ```bash
-$ sed 's/image:.*/image: quay.io\/<username>\/benchmark-operator:testing/' deploy/operator.yaml > /my/testing/operator.yaml
+$ sed 's/image:.*/image: quay.io\/<username>\/benchmark-operator:testing/' resources/operator.yaml > /my/testing/operator.yaml
 ```
 
 You can then redeploy operator
 ```bash
-# kubectl delete -f deploy/operator.yaml
+# kubectl delete -f resources/operator.yaml
 # kubectl apply -f /my/testing/operator.yaml
 ```
 Redefine CRD
 ```bash
-# kubectl apply -f deploy/crds/bench_v1alpha1_bench_crd.yaml
+# kubectl apply -f resources/crds/benchmark_v1alpha1_benchmark_crd.yaml
 ```
 Apply a new CR
 ```bash
-# kubectl apply -f deploy/crds/bench_v1alpha1_bench_cr.yaml
+# kubectl apply -f resources/crds/benchmark_v1alpha1_benchmark_cr.yaml
 ```
 
 ## CI

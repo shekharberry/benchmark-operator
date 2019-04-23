@@ -42,13 +42,13 @@
         apiVersion: v1
         metadata:
           name: '{{ meta.name }}-uperf-server-{{item}}'
-          namespace: '{{ meta.namespace }}'
+          namespace: '{{ operator_namespace }}'
           labels:
             app : uperf-bench-server
         spec:
          containers:
-         - name: bench
-           image: "quay.io/jtaleric/uperf:testing"
+         - name: benchmark
+           image: "quay.io/benchmark-operator/uperf:latest"
            command: ["/bin/sh", "-c"]
            args: ["uperf -s"]
          restartPolicy: OnFailure
@@ -59,7 +59,7 @@
     k8s_facts:
       kind: Pod
       api_version: v1
-      namespace: '{{ meta.namespace }}'
+      namespace: '{{ operator_namespace }}'
       label_selectors:
         - app = uperf-bench-server
     register: server_pods
@@ -74,37 +74,41 @@
         kind: ConfigMap
         metadata:
           name: uperf-test
-          namespace: '{{ meta.namespace }}'
+          namespace: '{{ operator_namespace }}'
         data:
           uperfXML: "{{ lookup('template', 'uperf-test.xml.j2') }}"
 
   - name: Start Client(s)
     k8s:
       definition:
-        kind: Pod
-        apiVersion: v1
+        kind: Job
+        apiVersion: batch/v1
         metadata:
           name: '{{ meta.name }}-uperf-client-{{item.status.podIP}}'
-          namespace: '{{ meta.namespace }}'
-          labels:
-            app : uperf-bench-client
+          namespace: '{{ operator_namespace }}'
         spec:
-         containers:
-         - name: bench
-           image: "quay.io/jtaleric/uperf:testing"
-           command: ["/bin/sh", "-c"]
-           args:
-             - "cat /tmp/uperf-test/uperfXML;
-                export h={{item.status.podIP}};
-                uperf -v -x -a -m /tmp/uperf-test/uperfXML -i 1"
-           volumeMounts:
-           - name: config-volume
-             mountPath: "/tmp/uperf-test"
-         volumes:
-           - name: config-volume
-             configMap:
-               name: uperf-test
-         restartPolicy: OnFailure
+          ttlSecondsAfterFinished: 600
+          template:
+            metadata:
+              labels:
+                app: uperf-bench-client
+            spec:
+              containers:
+              - name: benchmark
+                image: "quay.io/benchmark-operator/uperf:latest"
+                command: ["/bin/sh", "-c"]
+                args:
+                  - "cat /tmp/uperf-test/uperfXML;
+                     export h={{item.status.podIP}};
+                     uperf -v -x -a -m /tmp/uperf-test/uperfXML -i 1"
+                volumeMounts:
+                - name: config-volume
+                  mountPath: "/tmp/uperf-test"
+              volumes:
+                - name: config-volume
+                  configMap:
+                    name: uperf-test
+              restartPolicy: OnFailure
     when: server_pods.resources|length > 0
     with_items: "{{ server_pods.resources }}"
 
@@ -112,7 +116,7 @@
     k8s_facts:
       kind: pod
       api_version: v1
-      namespace: '{{ meta.namespace }}'
+      namespace: '{{ operator_namespace }}'
       label_selectors:
         - app = uperf-bench-client
     register: client_pods
@@ -124,9 +128,6 @@
     set_fact:
       clean_pods: |
           [
-          {% for item in client_pods.resources %}
-            "{{ item['metadata']['name'] }}",
-          {% endfor %}
           {% for item in server_pods.resources %}
             "{{ item['metadata']['name'] }}",
           {% endfor %}
@@ -139,7 +140,7 @@
     k8s:
       kind: pod
       api_version: v1
-      namespace: '{{ meta.namespace }}'
+      namespace: '{{ operator_namespace }}'
       state: absent
       name: "{{ item }}"
     with_items: "{{ clean_pods }}"

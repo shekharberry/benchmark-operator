@@ -13,3 +13,12 @@
   - include_role:
       name: sysbench
     when: sysbench is defined and sysbench.enabled is defined and sysbench.enabled
+  - include_role:
+      name: "couchbase-infra"
+    when: couchbase is defined and couchbase.servers.size > 0
+  - include_role:
+      name: "ycsb-bench"
+    when: ycsb is defined and ycsb.workers > 0
+  - include_role:
+      name: "byowl"
+    when: byowl is defined and byowl.clients > 0
